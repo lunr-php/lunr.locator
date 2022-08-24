@@ -9,7 +9,7 @@
         "php": ">=7.4",
         "lunr/halo": "dev-master",
         "lunr/config": "dev-master",
-        "psr/container": ">=1.0"
+        "psr/container": "~2.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=8.5",
@@ -17,6 +17,9 @@
     },
     "config": {
         "optimize-autoloader": true
+    },
+    "provide": {
+        "psr/container-implementation": "~2.0.0"
     },
     "autoload": {
         "psr-4": {
