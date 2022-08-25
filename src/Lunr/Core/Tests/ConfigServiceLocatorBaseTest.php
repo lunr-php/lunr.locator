@@ -69,22 +69,6 @@ class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTest
     }
 
     /**
-     * Test that override() throws an error when trying to override with non-object.
-     *
-     * @param mixed $value Non-object value
-     *
-     * @dataProvider invalidObjectProvider
-     * @covers       Lunr\Core\ConfigServiceLocator::override
-     */
-    public function testOverrideWithInvalidObject($value): void
-    {
-        $this->expectException('TypeError');
-        $this->expectExceptionMessageMatches('/^Argument 2 passed to Lunr\\\Core\\\ConfigServiceLocator::override\(\) must be an object/');
-
-        $this->class->override('id', $value);
-    }
-
-    /**
      * Test that get() locates a class.
      *
      * @covers \Lunr\Core\ConfigServiceLocator::get

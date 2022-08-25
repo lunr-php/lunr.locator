@@ -107,15 +107,23 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
      */
     public function testGetParametersProcessesIDParameter(): void
     {
+        $type = $this->getMockBuilder('\ReflectionNamedType')
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $type->expects($this->exactly(1))
+             ->method('getName')
+             ->willReturn('Lunr\Core\Configuration');
+
         $params = [ 'config' ];
 
         $param = $this->getMockBuilder('ReflectionParameter')
                       ->disableOriginalConstructor()
                       ->getMock();
 
-        $param->expects($this->once())
+        $param->expects($this->exactly(2))
               ->method('getType')
-              ->willReturn('Lunr\Core\Configuration');
+              ->willReturn($type);
 
         $method = $this->get_accessible_reflection_method('get_parameters');
 
@@ -138,7 +146,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
                      ->disableOriginalConstructor()
                      ->getMock();
 
-        $type->expects($this->once())
+        $type->expects($this->exactly(1))
              ->method('getName')
              ->willReturn('string');
 
@@ -146,7 +154,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
                       ->disableOriginalConstructor()
                       ->getMock();
 
-        $param->expects($this->once())
+        $param->expects($this->exactly(2))
               ->method('getType')
               ->willReturn($type);
 
@@ -156,6 +164,56 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
 
         $this->assertIsArray($return);
         $this->assertEquals('string', $return[0]);
+    }
+
+    /**
+     * Test that get_parameters processes non-ID parameters.
+     *
+     * @requires PHP >= 8.1
+     * @covers Lunr\Core\ConfigServiceLocator::get_parameters
+     */
+    public function testGetParametersProcessesNonIDParameterAsUnion(): void
+    {
+        $params = [ 'cow' ];
+
+        $type1 = $this->getMockBuilder('\ReflectionNamedType')
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $type2 = $this->getMockBuilder('\ReflectionNamedType')
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $type1->expects($this->once())
+              ->method('getName')
+              ->willReturn('\Stringable');
+
+        $type2->expects($this->once())
+              ->method('getName')
+              ->willReturn('string');
+
+        $union = $this->getMockBuilder('\ReflectionUnionType')
+                      ->disableOriginalConstructor()
+                      ->getMock();
+
+        $union->expects($this->once())
+              ->method('getTypes')
+              ->willReturn([ $type1, $type2 ]);
+
+        $param = $this->getMockBuilder('\ReflectionParameter')
+                      ->disableOriginalConstructor()
+                      ->getMock();
+
+        $param->expects($this->exactly(2))
+              ->method('getType')
+              ->willReturn($union);
+
+        $method = $this->get_accessible_reflection_method('get_parameters');
+
+        $return = $method->invokeArgs($this->class, [ $params, [ $param ] ]);
+
+        $this->assertIsArray($return);
+        $this->assertEquals('cow', $return[0]);
     }
 
     /**
@@ -215,7 +273,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
                       ->disableOriginalConstructor()
                       ->getMock();
 
-        $param->expects($this->exactly(2))
+        $param->expects($this->exactly(4))
               ->method('getType')
               ->willReturn($type);
 

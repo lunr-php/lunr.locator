@@ -298,13 +298,24 @@ class ConfigServiceLocator implements ContainerInterface
                 continue;
             }
 
-            if (isset($methodParams[$key]))
+            if (isset($methodParams[$key]) && $methodParams[$key]->getType() !== NULL)
             {
                 $typeClass = $methodParams[$key]->getType();
                 if ($typeClass instanceof ReflectionNamedType && $typeClass->getName() === 'string')
                 {
                     $processed_params[] = $value;
                     continue;
+                }
+                elseif (PHP_MAJOR_VERSION >= 8 && $typeClass instanceof \ReflectionUnionType)
+                {
+                    foreach ($typeClass->getTypes() as $type)
+                    {
+                        if ($type->getName() === 'string')
+                        {
+                            $processed_params[] = $value;
+                            continue 2;
+                        }
+                    }
                 }
             }
 
