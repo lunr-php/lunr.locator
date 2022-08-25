@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * PHPStan Method reflection
+ *
+ * @package    Lunr\Core
+ * @author     Sean Molenaar <s.molenaar@m2mobi.com>
+ * @copyright  2022, M2Mobi BV, Amsterdam, The Netherlands
+ * @license    http://lunr.nl/LICENSE MIT License
+ *
+ * @see https://phpstan.org/developing-extensions/class-reflection-extensions
+ */
+
 namespace Lunr\Core\PHPStan;
 
 use PHPStan\Reflection\ClassMemberReflection;
@@ -10,7 +21,6 @@ use PHPStan\TrinaryLogic;
 
 /**
  * Methodreflection for ConfigServiceLocator recipes
- * @see https://phpstan.org/developing-extensions/class-reflection-extensions
  */
 class ConfigServiceLocatorRecipeReflection implements MethodReflection
 {
