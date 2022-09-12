@@ -198,7 +198,41 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
              );
 
         $method = $this->get_accessible_reflection_method('process_new_instance');
-        $method->invokeArgs($this->class, [ 'id', $mock ]);
+        $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
+    }
+
+    /**
+     * Test that process_new_instance() calls defined methods with params and replaces the instance if immutable.
+     *
+     * @covers \Lunr\Core\ConfigServiceLocator::process_new_instance
+     */
+    public function testProcessNewInstanceCallsMethodsWithParamsReplacesImmutable(): void
+    {
+        $recipe = [
+            'id' => [
+                'methods' => [
+                    [
+                        'name'   => 'test',
+                        'params' => [ '!param1' ],
+                        'return_replaces_instance' => TRUE,
+                    ]
+                ],
+            ],
+        ];
+
+        $this->set_reflection_property_value('cache', $recipe);
+
+        $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
+
+        $mock->expects($this->exactly(1))
+             ->method('test')
+             ->with('param1')
+             ->willReturn(new \Lunr\Halo\CallbackMock());
+
+        $method = $this->get_accessible_reflection_method('process_new_instance');
+        $result = $method->invokeArgs($this->class, [ 'id', $mock ]);
+        $this->assertNotSame($mock, $result);
+        $this->assertInstanceOf(\Lunr\Halo\CallbackMock::class, $result);
     }
 
     /**
@@ -224,7 +258,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
              ->method('test');
 
         $method = $this->get_accessible_reflection_method('process_new_instance');
-        $method->invokeArgs($this->class, [ 'id', $mock ]);
+        $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 
     /**
@@ -257,7 +291,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
              ->with($this->identicalTo($object1), 'param2');
 
         $method = $this->get_accessible_reflection_method('process_new_instance');
-        $method->invokeArgs($this->class, [ 'id', $mock ]);
+        $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 
 }

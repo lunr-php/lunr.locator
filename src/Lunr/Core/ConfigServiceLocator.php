@@ -219,7 +219,9 @@ class ConfigServiceLocator implements ContainerInterface
                     $method_params = [];
                 }
 
-                $instance->{$method['name']}(...$method_params);
+                $replaces_instance = $method['return_replaces_instance'] ?? FALSE;
+                $method_output     = $instance->{$method['name']}(...$method_params);
+                $instance          = $replaces_instance ? $method_output : $instance;
             }
         }
 
