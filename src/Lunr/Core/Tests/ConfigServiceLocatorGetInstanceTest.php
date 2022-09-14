@@ -107,15 +107,23 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
      */
     public function testGetParametersProcessesIDParameter(): void
     {
+        $type = $this->getMockBuilder('\ReflectionNamedType')
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $type->expects($this->exactly(1))
+             ->method('getName')
+             ->willReturn('Lunr\Core\Configuration');
+
         $params = [ 'config' ];
 
         $param = $this->getMockBuilder('ReflectionParameter')
                       ->disableOriginalConstructor()
                       ->getMock();
 
-        $param->expects($this->once())
+        $param->expects($this->exactly(1))
               ->method('getType')
-              ->willReturn('Lunr\Core\Configuration');
+              ->willReturn($type);
 
         $method = $this->get_accessible_reflection_method('get_parameters');
 
