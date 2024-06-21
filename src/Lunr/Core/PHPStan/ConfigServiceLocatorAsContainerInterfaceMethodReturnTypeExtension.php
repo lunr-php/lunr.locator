@@ -11,8 +11,8 @@
 
 namespace Lunr\Core\PHPStan;
 
-use Psr\Container\ContainerInterface;
 use PHPStan\Reflection\MethodReflection;
+use Psr\Container\ContainerInterface;
 
 /**
  * Return type extension for ConfigServiceLocator recipes
@@ -36,7 +36,7 @@ class ConfigServiceLocatorAsContainerInterfaceMethodReturnTypeExtension extends 
      *
      * @return bool if the method is supported
      */
-    public function isMethodSupported(MethodReflection $methodReflection): bool
+    public function isStaticMethodSupported(MethodReflection $methodReflection): bool
     {
         return !in_array($methodReflection->getName(), [ 'has' ]);
     }

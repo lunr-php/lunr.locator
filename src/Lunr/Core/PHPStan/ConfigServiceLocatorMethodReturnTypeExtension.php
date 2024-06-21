@@ -12,18 +12,18 @@
 namespace Lunr\Core\PHPStan;
 
 use Lunr\Core\ConfigServiceLocator;
-use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 /**
  * Return type extension for ConfigServiceLocator recipes
  */
-class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicStaticMethodReturnTypeExtension
 {
 
     /**
@@ -42,7 +42,7 @@ class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodRetu
      *
      * @return bool if the method is supported
      */
-    public function isMethodSupported(MethodReflection $methodReflection): bool
+    public function isStaticMethodSupported(MethodReflection $methodReflection): bool
     {
         return !in_array($methodReflection->getName(), [ 'has', 'override' ]);
     }
@@ -51,12 +51,12 @@ class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodRetu
      * Return the type for this config service locator instance.
      *
      * @param MethodReflection $methodReflection Reflection of the method
-     * @param MethodCall       $methodCall       Call for this instance
+     * @param StaticCall       $methodCall       Call for this instance
      * @param Scope            $scope            Scope of this call
      *
      * @return Type|null The class or null if none is found
      */
-    public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
+    public function getTypeFromStaticMethodCall(MethodReflection $methodReflection, StaticCall $methodCall, Scope $scope): ?Type
     {
         if ($methodReflection->getName() !== 'get')
         {
