@@ -7,11 +7,11 @@
     "license": "MIT",
     "require": {
         "php": ">=8.1",
-        "lunr/config": "~0.10.0",
+        "lunr/config": "dev-master",
         "psr/container": "~2.0.0"
     },
     "require-dev": {
-        "lunr/halo": "~0.10.0",
+        "lunr/halo": "dev-master",
         "phpunit/phpunit": ">=9.0 <9.6",
         "ext-xdebug": "~3.1"
     },
