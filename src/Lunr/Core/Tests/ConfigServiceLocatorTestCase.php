@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the ConfigServiceLocatorTest class.
+ * This file contains the ConfigServiceLocatorTestCase class.
  *
  * SPDX-FileCopyrightText: Copyright 2013 M2mobi B.V., Amsterdam, The Netherlands
  * SPDX-FileCopyrightText: Copyright 2022 Move Agency Group B.V., Zwolle, The Netherlands
@@ -12,14 +12,14 @@ namespace Lunr\Core\Tests;
 
 use Lunr\Core\ConfigServiceLocator;
 use Lunr\Core\Configuration;
-use Lunr\Halo\LunrBaseTest;
+use Lunr\Halo\LunrBaseTestCase;
 
 /**
  * This class contains the tests for the locator class.
  *
  * @covers     \Lunr\Core\ConfigServiceLocator
  */
-abstract class ConfigServiceLocatorTest extends LunrBaseTest
+abstract class ConfigServiceLocatorTestCase extends LunrBaseTestCase
 {
 
     /**

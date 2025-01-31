@@ -18,7 +18,7 @@ use stdClass;
  *
  * @covers     Lunr\Core\ConfigServiceLocator
  */
-class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
+class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
 {
 
     /**
@@ -33,7 +33,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
         $basename = str_replace('src/Lunr/Core/Tests', 'tests/statics/', __DIR__);
         $filename = $basename . $filename;
 
-        $method = $this->get_accessible_reflection_method('load_recipe');
+        $method = $this->getReflectionMethod('load_recipe');
 
         $this->assertNotContains($filename, get_included_files());
         $method->invokeArgs($this->class, [ 'nonexisting' ]);
@@ -52,7 +52,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
         $basename = str_replace('src/Lunr/Core/Tests', 'tests/statics/', __DIR__);
         $filename = $basename . $filename;
 
-        $method = $this->get_accessible_reflection_method('load_recipe');
+        $method = $this->getReflectionMethod('load_recipe');
 
         $this->assertNotContains($filename, get_included_files());
         $method->invokeArgs($this->class, [ 'existing' ]);
@@ -66,8 +66,8 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
      */
     public function testLoadRecipeCachesWithValidRecipes(): void
     {
-        $method = $this->get_accessible_reflection_method('load_recipe');
-        $cache  = $this->get_accessible_reflection_property('cache');
+        $method = $this->getReflectionMethod('load_recipe');
+        $cache  = $this->getReflectionProperty('cache');
 
         $this->assertArrayNotHasKey('valid', $cache->getValue($this->class));
         $method->invokeArgs($this->class, [ 'valid' ]);
@@ -84,8 +84,8 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
      */
     public function testLoadRecipeDoesNotCacheWithInvalidRecipes($id): void
     {
-        $method = $this->get_accessible_reflection_method('load_recipe');
-        $cache  = $this->get_accessible_reflection_property('cache');
+        $method = $this->getReflectionMethod('load_recipe');
+        $cache  = $this->getReflectionProperty('cache');
 
         $this->assertArrayNotHasKey($id, $cache->getValue($this->class));
         $method->invokeArgs($this->class, [ 'valid' ]);
@@ -99,7 +99,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
      */
     public function testProcessNewInstanceReturnsInstance(): void
     {
-        $method   = $this->get_accessible_reflection_method('process_new_instance');
+        $method   = $this->getReflectionMethod('process_new_instance');
         $instance = new stdClass();
 
         $return = $method->invokeArgs($this->class, [ 'id', $instance ]);
@@ -114,12 +114,12 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
      */
     public function testProcessNewInstanceDoesNotStoreNonSingletonsInRegistry(): void
     {
-        $method   = $this->get_accessible_reflection_method('process_new_instance');
-        $registry = $this->get_accessible_reflection_property('registry');
+        $method   = $this->getReflectionMethod('process_new_instance');
+        $registry = $this->getReflectionProperty('registry');
         $instance = new stdClass();
 
         $recipe = [ 'id' => [ 'singleton' => FALSE ] ];
-        $this->set_reflection_property_value('cache', $recipe);
+        $this->setReflectionPropertyValue('cache', $recipe);
 
         $this->assertArrayNotHasKey('id', $registry->getValue($this->class));
         $method->invokeArgs($this->class, [ 'id', $instance ]);
@@ -133,12 +133,12 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
      */
     public function testProcessNewInstanceDoesNotStoreInRegistryIfSingletonInfoMissing(): void
     {
-        $method   = $this->get_accessible_reflection_method('process_new_instance');
-        $registry = $this->get_accessible_reflection_property('registry');
+        $method   = $this->getReflectionMethod('process_new_instance');
+        $registry = $this->getReflectionProperty('registry');
         $instance = new stdClass();
 
         $recipe = [ 'id' => [] ];
-        $this->set_reflection_property_value('cache', $recipe);
+        $this->setReflectionPropertyValue('cache', $recipe);
 
         $this->assertArrayNotHasKey('id', $registry->getValue($this->class));
         $method->invokeArgs($this->class, [ 'id', $instance ]);
@@ -152,12 +152,12 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
      */
     public function testProcessNewInstanceStoresSingletonsInRegistry(): void
     {
-        $method   = $this->get_accessible_reflection_method('process_new_instance');
-        $registry = $this->get_accessible_reflection_property('registry');
+        $method   = $this->getReflectionMethod('process_new_instance');
+        $registry = $this->getReflectionProperty('registry');
         $instance = new stdClass();
 
         $recipe = [ 'id' => [ 'singleton' => TRUE ] ];
-        $this->set_reflection_property_value('cache', $recipe);
+        $this->setReflectionPropertyValue('cache', $recipe);
 
         $this->assertArrayNotHasKey('id', $registry->getValue($this->class));
         $method->invokeArgs($this->class, [ 'id', $instance ]);
@@ -186,7 +186,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
             ],
         ];
 
-        $this->set_reflection_property_value('cache', $recipe);
+        $this->setReflectionPropertyValue('cache', $recipe);
 
         $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
 
@@ -197,7 +197,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
                  [ 'param2', 'param3' ]
              );
 
-        $method = $this->get_accessible_reflection_method('process_new_instance');
+        $method = $this->getReflectionMethod('process_new_instance');
         $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 
@@ -220,7 +220,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
             ],
         ];
 
-        $this->set_reflection_property_value('cache', $recipe);
+        $this->setReflectionPropertyValue('cache', $recipe);
 
         $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
 
@@ -229,7 +229,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
              ->with('param1')
              ->willReturn(new CallbackMock());
 
-        $method = $this->get_accessible_reflection_method('process_new_instance');
+        $method = $this->getReflectionMethod('process_new_instance');
         $result = $method->invokeArgs($this->class, [ 'id', $mock ]);
         $this->assertNotSame($mock, $result);
         $this->assertInstanceOf(CallbackMock::class, $result);
@@ -250,14 +250,14 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
             ],
         ];
 
-        $this->set_reflection_property_value('cache', $recipe);
+        $this->setReflectionPropertyValue('cache', $recipe);
 
         $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
 
         $mock->expects($this->exactly(1))
              ->method('test');
 
-        $method = $this->get_accessible_reflection_method('process_new_instance');
+        $method = $this->getReflectionMethod('process_new_instance');
         $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 
@@ -281,8 +281,8 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
 
         $object1 = (object) [ 'key1' => 'value1' ];
 
-        $this->set_reflection_property_value('cache', $recipe);
-        $this->set_reflection_property_value('registry', [ 'object1_id' => $object1 ]);
+        $this->setReflectionPropertyValue('cache', $recipe);
+        $this->setReflectionPropertyValue('registry', [ 'object1_id' => $object1 ]);
 
         $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
 
@@ -290,7 +290,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTest
              ->method('test')
              ->with($this->identicalTo($object1), 'param2');
 
-        $method = $this->get_accessible_reflection_method('process_new_instance');
+        $method = $this->getReflectionMethod('process_new_instance');
         $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 

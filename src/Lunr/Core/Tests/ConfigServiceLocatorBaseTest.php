@@ -17,7 +17,7 @@ use stdClass;
  *
  * @covers     Lunr\Core\ConfigServiceLocator
  */
-class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTest
+class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTestCase
 {
 
     /**
@@ -25,7 +25,7 @@ class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTest
      */
     public function testCacheIsEmptyArray(): void
     {
-        $this->assertArrayEmpty($this->get_reflection_property_value('cache'));
+        $this->assertArrayEmpty($this->getReflectionPropertyValue('cache'));
     }
 
     /**
@@ -33,7 +33,7 @@ class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTest
      */
     public function testRegistryIsSetupCorrectly(): void
     {
-        $registry = $this->get_reflection_property_value('registry');
+        $registry = $this->getReflectionPropertyValue('registry');
 
         $this->assertIsArray($registry);
         $this->assertCount(2, $registry);
@@ -46,7 +46,7 @@ class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTest
      */
     public function testConfigurationIsPassedCorrectly(): void
     {
-        $this->assertSame($this->configuration, $this->get_reflection_property_value('config'));
+        $this->assertSame($this->configuration, $this->getReflectionPropertyValue('config'));
     }
 
     /**
@@ -59,11 +59,11 @@ class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTest
         $registry = [ 'id' => 'Foo' ];
         $class    = new stdClass();
 
-        $this->set_reflection_property_value('registry', $registry);
+        $this->setReflectionPropertyValue('registry', $registry);
 
         $this->class->override('id', $class);
 
-        $registry = $this->get_reflection_property_value('registry');
+        $registry = $this->getReflectionPropertyValue('registry');
 
         $this->assertArrayHasKey('id', $registry);
         $this->assertSame($class, $registry['id']);
@@ -93,7 +93,7 @@ class ConfigServiceLocatorBaseTest extends ConfigServiceLocatorTest
 
         $this->class->override('id', $class);
 
-        $registry = $this->get_reflection_property_value('registry');
+        $registry = $this->getReflectionPropertyValue('registry');
 
         $this->assertArrayHasKey('id', $registry);
         $this->assertSame($class, $registry['id']);

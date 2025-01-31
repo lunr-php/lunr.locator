@@ -15,7 +15,7 @@ namespace Lunr\Core\Tests;
  *
  * @covers \Lunr\Core\ConfigServiceLocator
  */
-class ConfigServiceLocatorHasTest extends ConfigServiceLocatorTest
+class ConfigServiceLocatorHasTest extends ConfigServiceLocatorTestCase
 {
 
     /**

@@ -17,7 +17,7 @@ use LunrTest\Core\Type;
  *
  * @covers     Lunr\Core\ConfigServiceLocator
  */
-class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
+class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
 {
 
     /**
@@ -31,9 +31,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
         $this->expectExceptionMessage('Not possible to instantiate \'LunrTest\Corona\Controller\'!');
 
         $cache = [ 'controller' => [ 'name' => 'LunrTest\Corona\Controller' ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->get_accessible_reflection_method('get_instance');
+        $method = $this->getReflectionMethod('get_instance');
 
         $method->invokeArgs($this->class, [ 'controller' ]);
     }
@@ -49,9 +49,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
         $this->expectExceptionMessage('Not enough parameters for LunrTest\Core\Type::from()!');
 
         $cache = [ 'type' => [ 'name' => 'LunrTest\Core\Type', 'params' => [] ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->get_accessible_reflection_method('get_instance');
+        $method = $this->getReflectionMethod('get_instance');
 
         $method->invokeArgs($this->class, [ 'type' ]);
     }
@@ -64,9 +64,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
     public function testGetInstanceReturnsInstanceForEnum(): void
     {
         $cache = [ 'type' => [ 'name' => 'LunrTest\Core\Type', 'params' => [ 'a' ] ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->get_accessible_reflection_method('get_instance');
+        $method = $this->getReflectionMethod('get_instance');
 
         $value = $method->invokeArgs($this->class, [ 'type' ]);
 
@@ -82,9 +82,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
     public function testGetInstanceReturnsInstanceForClassWithoutConstructor(): void
     {
         $cache = [ 'stdclass' => [ 'name' => 'stdClass' ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->get_accessible_reflection_method('get_instance');
+        $method = $this->getReflectionMethod('get_instance');
 
         $this->assertInstanceOf('stdClass', $method->invokeArgs($this->class, [ 'stdclass' ]));
     }
@@ -100,9 +100,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
         $this->expectExceptionMessage('Not enough parameters for LunrTest\Corona\Request!');
 
         $cache = [ 'request' => [ 'name' => 'LunrTest\Corona\Request', 'params' => [] ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->get_accessible_reflection_method('get_instance');
+        $method = $this->getReflectionMethod('get_instance');
 
         $method->invokeArgs($this->class, [ 'request' ]);
     }
@@ -115,9 +115,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
     public function testGetInstanceReturnsInstanceForConstructorWithArguments(): void
     {
         $cache = [ 'datetime' => [ 'name' => 'LunrTest\Corona\Request', 'params' => [ 'config' ] ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->get_accessible_reflection_method('get_instance');
+        $method = $this->getReflectionMethod('get_instance');
 
         $this->assertInstanceOf('LunrTest\Corona\Request', $method->invokeArgs($this->class, [ 'datetime' ]));
     }
@@ -130,9 +130,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
     public function testGetInstanceReturnsInstanceForConstructorWithoutArguments(): void
     {
         $cache = [ 'datetime' => [ 'name' => 'LunrTest\Core\DateTime', 'params' => [] ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->get_accessible_reflection_method('get_instance');
+        $method = $this->getReflectionMethod('get_instance');
 
         $this->assertInstanceOf('LunrTest\Core\DateTime', $method->invokeArgs($this->class, [ 'datetime' ]));
     }
@@ -162,7 +162,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
               ->method('getType')
               ->willReturn($type);
 
-        $method = $this->get_accessible_reflection_method('get_parameters');
+        $method = $this->getReflectionMethod('get_parameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [ $param ] ]);
 
@@ -195,7 +195,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
               ->method('getType')
               ->willReturn($type);
 
-        $method = $this->get_accessible_reflection_method('get_parameters');
+        $method = $this->getReflectionMethod('get_parameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [ $param ] ]);
 
@@ -212,7 +212,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
     {
         $params = [ [], 5, NULL ];
 
-        $method = $this->get_accessible_reflection_method('get_parameters');
+        $method = $this->getReflectionMethod('get_parameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [] ]);
 
@@ -231,7 +231,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
     {
         $params = [ '!string' ];
 
-        $method = $this->get_accessible_reflection_method('get_parameters');
+        $method = $this->getReflectionMethod('get_parameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [] ]);
 
@@ -264,7 +264,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTest
               ->method('getType')
               ->willReturn($type);
 
-        $method = $this->get_accessible_reflection_method('get_parameters');
+        $method = $this->getReflectionMethod('get_parameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [ $param, $param, $param ] ]);
 

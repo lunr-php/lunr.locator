@@ -15,7 +15,7 @@ namespace Lunr\Core\Tests;
  *
  * @covers     Lunr\Core\ConfigServiceLocator
  */
-class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
+class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTestCase
 {
 
     /**
@@ -36,7 +36,7 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
     public function testLocateReinstantiatesInstanceFromCache(): void
     {
         $cache = [ 'datetime' => [ 'name' => 'LunrTest\Core\DateTime', 'params' => [ 'config' ] ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
         $this->assertInstanceOf('LunrTest\Core\DateTime', $this->class->get('datetime'));
     }
@@ -63,7 +63,7 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
             ],
         ];
 
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
         $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
 
@@ -74,11 +74,11 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
                  [ 'param2', 'param3' ]
              );
 
-        $this->mock_method([ $this->class, 'get_instance' ], function () use ($mock) { return $mock; });
+        $this->mockMethod([ $this->class, 'get_instance' ], function () use ($mock) { return $mock; });
 
         $this->class->get('id');
 
-        $this->unmock_method([ $this->class, 'get_instance' ]);
+        $this->unmockMethod([ $this->class, 'get_instance' ]);
     }
 
     /**
@@ -88,11 +88,11 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
      */
     public function testLocateProcessesTotallyNewInstance(): void
     {
-        $this->assertArrayNotHasKey('datetime', $this->get_reflection_property_value('registry'));
+        $this->assertArrayNotHasKey('datetime', $this->getReflectionPropertyValue('registry'));
 
         $this->class->get('datetime');
 
-        $return = $this->get_reflection_property_value('registry');
+        $return = $this->getReflectionPropertyValue('registry');
         $this->assertArrayHasKey('datetime', $return);
         $this->assertInstanceOf('LunrTest\Core\DateTime', $return['datetime']);
     }
@@ -138,7 +138,7 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
     public function testMagicCallReinstantiatesInstanceFromCache(): void
     {
         $cache = [ 'datetime' => [ 'name' => 'LunrTest\Core\DateTime', 'params' => [ 'config' ] ] ];
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
         $this->assertInstanceOf('LunrTest\Core\DateTime', $this->class->datetime());
     }
@@ -165,7 +165,7 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
             ],
         ];
 
-        $this->set_reflection_property_value('cache', $cache);
+        $this->setReflectionPropertyValue('cache', $cache);
 
         $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
 
@@ -176,11 +176,11 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
                  [ 'param2', 'param3' ]
              );
 
-        $this->mock_method([ $this->class, 'get_instance' ], function () use ($mock) { return $mock; });
+        $this->mockMethod([ $this->class, 'get_instance' ], function () use ($mock) { return $mock; });
 
         $this->class->id();
 
-        $this->unmock_method([ $this->class, 'get_instance' ]);
+        $this->unmockMethod([ $this->class, 'get_instance' ]);
     }
 
     /**
@@ -190,7 +190,7 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTest
      */
     public function testMagicCallProcessesTotallyNewInstance(): void
     {
-        $registry = $this->get_accessible_reflection_property('registry');
+        $registry = $this->getReflectionProperty('registry');
 
         $this->assertArrayNotHasKey('datetime', $registry->getValue($this->class));
         $this->class->datetime();
