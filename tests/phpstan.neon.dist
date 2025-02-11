@@ -3,12 +3,10 @@
 # SPDX-License-Identifier: CC0-1.0
 
 parameters:
-    level: 3
+    level: 5
     paths:
         - ../src
     bootstrapFiles:
         - phpstan.autoload.inc.php
     excludePaths:
         - ../src/*/Tests/*
-    typeAliases:
-        LocatorRecipe: 'array<string,array{name: string, params: mixed[], singleton: bool, methods: array{name: string, params: mixed[]}}>'

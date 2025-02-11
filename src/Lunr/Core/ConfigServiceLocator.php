@@ -23,34 +23,45 @@ use ReflectionParameter;
 
 /**
  * Class Locator
+ *
+ * @phpstan-type LocatorRecipe array{
+ *     name: class-string<object>,
+ *     params: mixed[],
+ *     singleton: bool,
+ *     methods?: list<array{
+ *         name: string,
+ *         params?: mixed[],
+ *         return_replaces_instance?: bool,
+ *     }>,
+ * }
  */
 class ConfigServiceLocator implements ContainerInterface
 {
 
     /**
      * Registry for storing shared objects.
-     * @var array
+     * @var object[]
      */
-    protected $registry;
+    protected array $registry;
 
     /**
      * Class bootstrap config cache.
-     * @var array
+     * @var LocatorRecipe[]
      */
-    protected $cache;
+    protected array $cache;
 
     /**
      * Instance of the Configuration class.
      * @var Configuration
      */
-    protected $config;
+    protected Configuration $config;
 
     /**
      * Constructor.
      *
      * @param Configuration $config Shared instance of the Configuration class.
      */
-    public function __construct($config)
+    public function __construct(Configuration $config)
     {
         $this->registry = [];
         $this->cache    = [];
@@ -145,7 +156,7 @@ class ConfigServiceLocator implements ContainerInterface
      */
     public function get(string $id)
     {
-        if (isset($this->registry[$id]) && is_object($this->registry[$id]))
+        if (isset($this->registry[$id]))
         {
             return $this->registry[$id];
         }
@@ -174,6 +185,9 @@ class ConfigServiceLocator implements ContainerInterface
      */
     protected function load_recipe(string $id): void
     {
+        /**
+         * @var LocatorRecipe $recipe
+         */
         $recipe = [];
         $path   = 'locator/locate.' . $id . '.inc.php';
         if (stream_resolve_include_path($path) !== FALSE)

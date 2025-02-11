@@ -22,6 +22,8 @@ use PHPStan\Type\Type;
 
 /**
  * Return type extension for ConfigServiceLocator recipes
+ *
+ * @phpstan-import-type LocatorRecipe from ConfigServiceLocator
  */
 class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
