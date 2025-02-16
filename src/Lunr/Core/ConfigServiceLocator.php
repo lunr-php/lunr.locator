@@ -222,19 +222,19 @@ class ConfigServiceLocator implements ContainerInterface
             {
                 if (isset($method['params']))
                 {
-                    $method_params = $this->get_parameters(
+                    $methodParams = $this->get_parameters(
                         $method['params'],
                         (new ReflectionMethod($instance, $method['name']))->getParameters()
                     );
                 }
                 else
                 {
-                    $method_params = [];
+                    $methodParams = [];
                 }
 
-                $replaces_instance = $method['return_replaces_instance'] ?? FALSE;
-                $method_output     = $instance->{$method['name']}(...$method_params);
-                $instance          = $replaces_instance ? $method_output : $instance;
+                $replacesInstance = $method['return_replaces_instance'] ?? FALSE;
+                $methodOutput     = $instance->{$method['name']}(...$methodParams);
+                $instance         = $replacesInstance ? $methodOutput : $instance;
             }
         }
 
@@ -274,15 +274,15 @@ class ConfigServiceLocator implements ContainerInterface
             return $reflection->newInstance();
         }
 
-        $number_of_total_parameters    = $constructor->getNumberOfParameters();
-        $number_of_required_parameters = $constructor->getNumberOfRequiredParameters();
+        $numberOfTotalParameters    = $constructor->getNumberOfParameters();
+        $numberOfRequiredParameters = $constructor->getNumberOfRequiredParameters();
 
-        if (count($this->cache[$id]['params']) < $number_of_required_parameters)
+        if (count($this->cache[$id]['params']) < $numberOfRequiredParameters)
         {
             throw new ContainerException("Not enough parameters for $reflection->name!");
         }
 
-        if ($number_of_total_parameters > 0)
+        if ($numberOfTotalParameters > 0)
         {
             return $reflection->newInstanceArgs(
                 $this->get_parameters(
@@ -307,19 +307,19 @@ class ConfigServiceLocator implements ContainerInterface
      */
     protected function get_parameters(array $params, array $methodParams): array
     {
-        $processed_params = [];
+        $processedParams = [];
 
         foreach ($params as $key => $value)
         {
             if (!is_string($value))
             {
-                $processed_params[] = $value;
+                $processedParams[] = $value;
                 continue;
             }
 
             if ($value[0] === '!')
             {
-                $processed_params[] = substr($value, 1);
+                $processedParams[] = substr($value, 1);
                 continue;
             }
 
@@ -328,15 +328,15 @@ class ConfigServiceLocator implements ContainerInterface
                 $typeClass = $methodParams[$key]->getType();
                 if ($typeClass instanceof ReflectionNamedType && $typeClass->getName() === 'string')
                 {
-                    $processed_params[] = $value;
+                    $processedParams[] = $value;
                     continue;
                 }
             }
 
-            $processed_params[] = $this->get($value);
+            $processedParams[] = $this->get($value);
         }
 
-        return $processed_params;
+        return $processedParams;
     }
 
 }
