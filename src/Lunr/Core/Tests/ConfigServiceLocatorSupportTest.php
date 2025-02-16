@@ -22,9 +22,9 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
 {
 
     /**
-     * Test that load_recipe() does not try to include non-existing files.
+     * Test that loadRecipe() does not try to include non-existing files.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::load_recipe
+     * @covers Lunr\Core\ConfigServiceLocator::loadRecipe
      */
     public function testLoadRecipeDoesNotIncludeNonExistingFile(): void
     {
@@ -33,7 +33,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
         $basename = str_replace('src/Lunr/Core/Tests', 'tests/statics/', __DIR__);
         $filename = $basename . $filename;
 
-        $method = $this->getReflectionMethod('load_recipe');
+        $method = $this->getReflectionMethod('loadRecipe');
 
         $this->assertNotContains($filename, get_included_files());
         $method->invokeArgs($this->class, [ 'nonexisting' ]);
@@ -41,9 +41,9 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that load_recipe() includes existing files.
+     * Test that loadRecipe() includes existing files.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::load_recipe
+     * @covers Lunr\Core\ConfigServiceLocator::loadRecipe
      */
     public function testLoadRecipeIncludesExistingFile(): void
     {
@@ -52,7 +52,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
         $basename = str_replace('src/Lunr/Core/Tests', 'tests/statics/', __DIR__);
         $filename = $basename . $filename;
 
-        $method = $this->getReflectionMethod('load_recipe');
+        $method = $this->getReflectionMethod('loadRecipe');
 
         $this->assertNotContains($filename, get_included_files());
         $method->invokeArgs($this->class, [ 'existing' ]);
@@ -60,13 +60,13 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that load_recipe() caches valid recipes.
+     * Test that loadRecipe() caches valid recipes.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::load_recipe
+     * @covers Lunr\Core\ConfigServiceLocator::loadRecipe
      */
     public function testLoadRecipeCachesWithValidRecipes(): void
     {
-        $method = $this->getReflectionMethod('load_recipe');
+        $method = $this->getReflectionMethod('loadRecipe');
         $cache  = $this->getReflectionProperty('cache');
 
         $this->assertArrayNotHasKey('valid', $cache->getValue($this->class));
@@ -75,16 +75,16 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that load_recipe() does not cache invalid recipes.
+     * Test that loadRecipe() does not cache invalid recipes.
      *
      * @param string $id ID of an invalid recipe.
      *
      * @dataProvider invalidRecipeProvider
-     * @covers       Lunr\Core\ConfigServiceLocator::load_recipe
+     * @covers       Lunr\Core\ConfigServiceLocator::loadRecipe
      */
     public function testLoadRecipeDoesNotCacheWithInvalidRecipes($id): void
     {
-        $method = $this->getReflectionMethod('load_recipe');
+        $method = $this->getReflectionMethod('loadRecipe');
         $cache  = $this->getReflectionProperty('cache');
 
         $this->assertArrayNotHasKey($id, $cache->getValue($this->class));
@@ -93,13 +93,13 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that process_new_instance() returns the passed instance.
+     * Test that processNewInstance() returns the passed instance.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceReturnsInstance(): void
     {
-        $method   = $this->getReflectionMethod('process_new_instance');
+        $method   = $this->getReflectionMethod('processNewInstance');
         $instance = new stdClass();
 
         $return = $method->invokeArgs($this->class, [ 'id', $instance ]);
@@ -108,13 +108,13 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that process_new_instance() does not store non-singleton objects in the registry.
+     * Test that processNewInstance() does not store non-singleton objects in the registry.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceDoesNotStoreNonSingletonsInRegistry(): void
     {
-        $method   = $this->getReflectionMethod('process_new_instance');
+        $method   = $this->getReflectionMethod('processNewInstance');
         $registry = $this->getReflectionProperty('registry');
         $instance = new stdClass();
 
@@ -127,13 +127,13 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that process_new_instance() does not store in the registry if the singleton info is missing.
+     * Test that processNewInstance() does not store in the registry if the singleton info is missing.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceDoesNotStoreInRegistryIfSingletonInfoMissing(): void
     {
-        $method   = $this->getReflectionMethod('process_new_instance');
+        $method   = $this->getReflectionMethod('processNewInstance');
         $registry = $this->getReflectionProperty('registry');
         $instance = new stdClass();
 
@@ -146,13 +146,13 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that process_new_instance() stores singleton objects in the registry.
+     * Test that processNewInstance() stores singleton objects in the registry.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceStoresSingletonsInRegistry(): void
     {
-        $method   = $this->getReflectionMethod('process_new_instance');
+        $method   = $this->getReflectionMethod('processNewInstance');
         $registry = $this->getReflectionProperty('registry');
         $instance = new stdClass();
 
@@ -165,9 +165,9 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that process_new_instance() calls defined methods with params.
+     * Test that processNewInstance() calls defined methods with params.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceCallsMethodsWithParams(): void
     {
@@ -197,14 +197,14 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
                  [ 'param2', 'param3' ]
              );
 
-        $method = $this->getReflectionMethod('process_new_instance');
+        $method = $this->getReflectionMethod('processNewInstance');
         $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 
     /**
-     * Test that process_new_instance() calls defined methods with params and replaces the instance if immutable.
+     * Test that processNewInstance() calls defined methods with params and replaces the instance if immutable.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceCallsMethodsWithParamsReplacesImmutable(): void
     {
@@ -229,16 +229,16 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
              ->with('param1')
              ->willReturn(new CallbackMock());
 
-        $method = $this->getReflectionMethod('process_new_instance');
+        $method = $this->getReflectionMethod('processNewInstance');
         $result = $method->invokeArgs($this->class, [ 'id', $mock ]);
         $this->assertNotSame($mock, $result);
         $this->assertInstanceOf(CallbackMock::class, $result);
     }
 
     /**
-     * Test that process_new_instance() calls defined methods with no params.
+     * Test that processNewInstance() calls defined methods with no params.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceCallsMethodsWithNoParams(): void
     {
@@ -257,14 +257,14 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
         $mock->expects($this->exactly(1))
              ->method('test');
 
-        $method = $this->getReflectionMethod('process_new_instance');
+        $method = $this->getReflectionMethod('processNewInstance');
         $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 
     /**
-     * Test that process_new_instance() calls defined methods with located params.
+     * Test that processNewInstance() calls defined methods with located params.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::process_new_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::processNewInstance
      */
     public function testProcessNewInstanceCallsMethodsWithLocatedParams(): void
     {
@@ -290,7 +290,7 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
              ->method('test')
              ->with($this->identicalTo($object1), 'param2');
 
-        $method = $this->getReflectionMethod('process_new_instance');
+        $method = $this->getReflectionMethod('processNewInstance');
         $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));
     }
 

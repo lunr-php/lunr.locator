@@ -21,9 +21,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
 {
 
     /**
-     * Test that get_instance() throws for a non-instantiable class.
+     * Test that getInstance() throws for a non-instantiable class.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::getInstance
      */
     public function testGetInstanceThrowsExceptionForNonInstantiableClass(): void
     {
@@ -33,15 +33,15 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
         $cache = [ 'controller' => [ 'name' => 'LunrTest\Corona\Controller' ] ];
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->getReflectionMethod('get_instance');
+        $method = $this->getReflectionMethod('getInstance');
 
         $method->invokeArgs($this->class, [ 'controller' ]);
     }
 
     /**
-     * Test that get_instance() throws an exception when there are not enough arguments for the Enum.
+     * Test that getInstance() throws an exception when there are not enough arguments for the Enum.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::getInstance
      */
     public function testGetInstanceThrowsExceptionForTooLittleNumberOfEnumArguments(): void
     {
@@ -51,22 +51,22 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
         $cache = [ 'type' => [ 'name' => 'LunrTest\Core\Type', 'params' => [] ] ];
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->getReflectionMethod('get_instance');
+        $method = $this->getReflectionMethod('getInstance');
 
         $method->invokeArgs($this->class, [ 'type' ]);
     }
 
     /**
-     * Test that get_instance() returns an enum instance.
+     * Test that getInstance() returns an enum instance.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::getInstance
      */
     public function testGetInstanceReturnsInstanceForEnum(): void
     {
         $cache = [ 'type' => [ 'name' => 'LunrTest\Core\Type', 'params' => [ 'a' ] ] ];
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->getReflectionMethod('get_instance');
+        $method = $this->getReflectionMethod('getInstance');
 
         $value = $method->invokeArgs($this->class, [ 'type' ]);
 
@@ -75,24 +75,24 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that get_instance() returns an instance if the class doesn't have a Constructor.
+     * Test that getInstance() returns an instance if the class doesn't have a Constructor.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::getInstance
      */
     public function testGetInstanceReturnsInstanceForClassWithoutConstructor(): void
     {
         $cache = [ 'stdclass' => [ 'name' => 'stdClass' ] ];
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->getReflectionMethod('get_instance');
+        $method = $this->getReflectionMethod('getInstance');
 
         $this->assertInstanceOf('stdClass', $method->invokeArgs($this->class, [ 'stdclass' ]));
     }
 
     /**
-     * Test that get_instance() throws an exception when there are not enough arguments for the Constructor.
+     * Test that getInstance() throws an exception when there are not enough arguments for the Constructor.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::getInstance
      */
     public function testGetInstanceThrowsExceptionForTooLittleNumberOfConstructorArguments(): void
     {
@@ -102,45 +102,45 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
         $cache = [ 'request' => [ 'name' => 'LunrTest\Corona\Request', 'params' => [] ] ];
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->getReflectionMethod('get_instance');
+        $method = $this->getReflectionMethod('getInstance');
 
         $method->invokeArgs($this->class, [ 'request' ]);
     }
 
     /**
-     * Test that get_instance() returns an instance for a Constructor with arguments.
+     * Test that getInstance() returns an instance for a Constructor with arguments.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::getInstance
      */
     public function testGetInstanceReturnsInstanceForConstructorWithArguments(): void
     {
         $cache = [ 'datetime' => [ 'name' => 'LunrTest\Corona\Request', 'params' => [ 'config' ] ] ];
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->getReflectionMethod('get_instance');
+        $method = $this->getReflectionMethod('getInstance');
 
         $this->assertInstanceOf('LunrTest\Corona\Request', $method->invokeArgs($this->class, [ 'datetime' ]));
     }
 
     /**
-     * Test that get_instance() returns an instance for a Constructor without arguments.
+     * Test that getInstance() returns an instance for a Constructor without arguments.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_instance
+     * @covers \Lunr\Core\ConfigServiceLocator::getInstance
      */
     public function testGetInstanceReturnsInstanceForConstructorWithoutArguments(): void
     {
         $cache = [ 'datetime' => [ 'name' => 'LunrTest\Core\DateTime', 'params' => [] ] ];
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $method = $this->getReflectionMethod('get_instance');
+        $method = $this->getReflectionMethod('getInstance');
 
         $this->assertInstanceOf('LunrTest\Core\DateTime', $method->invokeArgs($this->class, [ 'datetime' ]));
     }
 
     /**
-     * Test that get_parameters processes ID parameters.
+     * Test that getParameters processes ID parameters.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_parameters
+     * @covers \Lunr\Core\ConfigServiceLocator::getParameters
      */
     public function testGetParametersProcessesIDParameter(): void
     {
@@ -162,7 +162,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
               ->method('getType')
               ->willReturn($type);
 
-        $method = $this->getReflectionMethod('get_parameters');
+        $method = $this->getReflectionMethod('getParameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [ $param ] ]);
 
@@ -171,9 +171,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that get_parameters processes non-ID parameters.
+     * Test that getParameters processes non-ID parameters.
      *
-     * @covers Lunr\Core\ConfigServiceLocator::get_parameters
+     * @covers Lunr\Core\ConfigServiceLocator::getParameters
      */
     public function testGetParametersProcessesNonIDParameter(): void
     {
@@ -195,7 +195,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
               ->method('getType')
               ->willReturn($type);
 
-        $method = $this->getReflectionMethod('get_parameters');
+        $method = $this->getReflectionMethod('getParameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [ $param ] ]);
 
@@ -204,15 +204,15 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that get_parameters processes non-string parameters.
+     * Test that getParameters processes non-string parameters.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_parameters
+     * @covers \Lunr\Core\ConfigServiceLocator::getParameters
      */
     public function testGetParametersProcessesNonStringParameter(): void
     {
         $params = [ [], 5, NULL ];
 
-        $method = $this->getReflectionMethod('get_parameters');
+        $method = $this->getReflectionMethod('getParameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [] ]);
 
@@ -223,15 +223,15 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that get_parameters processes forced non-ID parameters.
+     * Test that getParameters processes forced non-ID parameters.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_parameters
+     * @covers \Lunr\Core\ConfigServiceLocator::getParameters
      */
     public function testGetParametersProcessesForcedNonIDParameter(): void
     {
         $params = [ '!string' ];
 
-        $method = $this->getReflectionMethod('get_parameters');
+        $method = $this->getReflectionMethod('getParameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [] ]);
 
@@ -240,9 +240,9 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
     }
 
     /**
-     * Test that get_parameters processes mixed parameters.
+     * Test that getParameters processes mixed parameters.
      *
-     * @covers \Lunr\Core\ConfigServiceLocator::get_parameters
+     * @covers \Lunr\Core\ConfigServiceLocator::getParameters
      */
     public function testGetParametersProcessesMixedParameters(): void
     {
@@ -264,7 +264,7 @@ class ConfigServiceLocatorGetInstanceTest extends ConfigServiceLocatorTestCase
               ->method('getType')
               ->willReturn($type);
 
-        $method = $this->getReflectionMethod('get_parameters');
+        $method = $this->getReflectionMethod('getParameters');
 
         $return = $method->invokeArgs($this->class, [ $params, [ $param, $param, $param ] ]);
 

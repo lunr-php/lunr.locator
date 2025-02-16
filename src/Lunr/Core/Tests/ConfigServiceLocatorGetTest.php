@@ -74,11 +74,11 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTestCase
                  [ 'param2', 'param3' ]
              );
 
-        $this->mockMethod([ $this->class, 'get_instance' ], function () use ($mock) { return $mock; });
+        $this->mockMethod([ $this->class, 'getInstance' ], function () use ($mock) { return $mock; });
 
         $this->class->get('id');
 
-        $this->unmockMethod([ $this->class, 'get_instance' ]);
+        $this->unmockMethod([ $this->class, 'getInstance' ]);
     }
 
     /**
@@ -176,11 +176,11 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTestCase
                  [ 'param2', 'param3' ]
              );
 
-        $this->mockMethod([ $this->class, 'get_instance' ], function () use ($mock) { return $mock; });
+        $this->mockMethod([ $this->class, 'getInstance' ], function () use ($mock) { return $mock; });
 
         $this->class->id();
 
-        $this->unmockMethod([ $this->class, 'get_instance' ]);
+        $this->unmockMethod([ $this->class, 'getInstance' ]);
     }
 
     /**

@@ -134,7 +134,7 @@ class ConfigServiceLocator implements ContainerInterface
             return TRUE;
         }
 
-        $this->load_recipe($id);
+        $this->loadRecipe($id);
 
         if (isset($this->cache[$id]))
         {
@@ -163,14 +163,14 @@ class ConfigServiceLocator implements ContainerInterface
 
         if (isset($this->cache[$id]))
         {
-            return $this->process_new_instance($id, $this->get_instance($id));
+            return $this->processNewInstance($id, $this->getInstance($id));
         }
 
-        $this->load_recipe($id);
+        $this->loadRecipe($id);
 
         if (isset($this->cache[$id]))
         {
-            return $this->process_new_instance($id, $this->get_instance($id));
+            return $this->processNewInstance($id, $this->getInstance($id));
         }
 
         throw new NotFoundException("Failed to locate object for identifier '$id'!");
@@ -183,7 +183,7 @@ class ConfigServiceLocator implements ContainerInterface
      *
      * @return void
      */
-    protected function load_recipe(string $id): void
+    protected function loadRecipe(string $id): void
     {
         /**
          * @var LocatorRecipe $recipe
@@ -209,7 +209,7 @@ class ConfigServiceLocator implements ContainerInterface
      *
      * @return object The passed object instance.
      */
-    protected function process_new_instance(string $id, object $instance): object
+    protected function processNewInstance(string $id, object $instance): object
     {
         if (isset($this->cache[$id]['singleton']) && ($this->cache[$id]['singleton'] === TRUE))
         {
@@ -222,7 +222,7 @@ class ConfigServiceLocator implements ContainerInterface
             {
                 if (isset($method['params']))
                 {
-                    $methodParams = $this->get_parameters(
+                    $methodParams = $this->getParameters(
                         $method['params'],
                         (new ReflectionMethod($instance, $method['name']))->getParameters()
                     );
@@ -248,7 +248,7 @@ class ConfigServiceLocator implements ContainerInterface
      *
      * @return object|null New Object on success, NULL on error.
      */
-    protected function get_instance(string $id): ?object
+    protected function getInstance(string $id): ?object
     {
         $reflection = new ReflectionClass($this->cache[$id]['name']);
 
@@ -285,7 +285,7 @@ class ConfigServiceLocator implements ContainerInterface
         if ($numberOfTotalParameters > 0)
         {
             return $reflection->newInstanceArgs(
-                $this->get_parameters(
+                $this->getParameters(
                     $this->cache[$id]['params'],
                     $constructor->getParameters()
                 )
@@ -305,7 +305,7 @@ class ConfigServiceLocator implements ContainerInterface
      *
      * @return array Array of processed parameters ready for instantiation.
      */
-    protected function get_parameters(array $params, array $methodParams): array
+    protected function getParameters(array $params, array $methodParams): array
     {
         $processedParams = [];
 
