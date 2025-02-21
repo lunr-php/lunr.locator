@@ -41,18 +41,6 @@ class ConfigServiceLocatorAsContainerInterfaceMethodReturnTypeExtension extends 
         return !in_array($methodReflection->getName(), [ 'has' ]);
     }
 
-    /**
-     * Catch locator get calls in the locate files
-     *
-     * @param string $name Name of the locator
-     *
-     * @return void
-     */
-    public function get(string $name): void
-    {
-        //NO-OP
-    }
-
 }
 
 ?>

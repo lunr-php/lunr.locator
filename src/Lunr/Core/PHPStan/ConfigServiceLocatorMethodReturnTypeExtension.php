@@ -81,19 +81,41 @@ class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodRetu
         /** @var LocatorRecipe $recipe */
         $recipe = [];
         $path   = 'locator/locate.' . $id . '.inc.php';
-        if (stream_resolve_include_path($path) === FALSE)
+        $file   = stream_resolve_include_path($path);
+
+        if ($file === FALSE)
         {
             return NULL;
         }
 
-        include_once $path;
+        $class = NULL;
 
-        if (!isset($recipe[$id]['name']))
+        $handle = fopen($file, 'r');
+        if ($handle !== FALSE)
+        {
+            while (($line = fgets($handle)) !== FALSE)
+            {
+                if (str_contains($line, '$recipe[\'' . $id . '\'][\'name\']'))
+                {
+                    preg_match("/=\s*'([^']+)'/", $line, $matches);
+                    if (isset($matches[1]))
+                    {
+                        $class = $matches[1];
+                    }
+
+                    break;
+                }
+            }
+
+            fclose($handle);
+        }
+
+        if ($class === NULL)
         {
             return NULL;
         }
 
-        return new ObjectType($recipe[$id]['name']);
+        return new ObjectType($class);
     }
 
 }
