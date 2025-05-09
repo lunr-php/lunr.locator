@@ -76,10 +76,8 @@ class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodRetu
             }
         }
 
-        /** @var LocatorRecipe $recipe */
-        $recipe = [];
-        $path   = 'locator/locate.' . $id . '.inc.php';
-        $file   = stream_resolve_include_path($path);
+        $path = 'locator/locate.' . $id . '.inc.php';
+        $file = stream_resolve_include_path($path);
 
         if ($file === FALSE)
         {
