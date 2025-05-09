@@ -66,14 +66,12 @@ class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodRetu
         {
             $arg = $methodCall->getArgs()[0]->value;
 
-            if ($arg instanceof String_)
-            {
-                $id = $arg->value;
-            }
-            else
+            if (!($arg instanceof String_))
             {
                 return NULL;
             }
+
+            $id = $arg->value;
         }
 
         $path = 'locator/locate.' . $id . '.inc.php';
@@ -91,16 +89,18 @@ class ConfigServiceLocatorMethodReturnTypeExtension implements DynamicMethodRetu
         {
             while (($line = fgets($handle)) !== FALSE)
             {
-                if (str_contains($line, '$recipe[\'' . $id . '\'][\'name\']'))
+                if (!str_contains($line, '$recipe[\'' . $id . '\'][\'name\']'))
                 {
-                    preg_match("/=\s*'([^']+)'/", $line, $matches);
-                    if (isset($matches[1]))
-                    {
-                        $class = $matches[1];
-                    }
-
-                    break;
+                    continue;
                 }
+
+                preg_match("/=\s*'([^']+)'/", $line, $matches);
+                if (isset($matches[1]))
+                {
+                    $class = $matches[1];
+                }
+
+                break;
             }
 
             fclose($handle);
