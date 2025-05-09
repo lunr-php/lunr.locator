@@ -195,10 +195,12 @@ class ConfigServiceLocator implements ContainerInterface
             include $path;
         }
 
-        if (isset($recipe[$id]) && is_array($recipe[$id]) && is_array($recipe[$id]['params']))
+        if (!isset($recipe[$id]) || !is_array($recipe[$id]) || !is_array($recipe[$id]['params']))
         {
-            $this->cache[$id] = $recipe[$id];
+            return;
         }
+
+        $this->cache[$id] = $recipe[$id];
     }
 
     /**
@@ -291,10 +293,8 @@ class ConfigServiceLocator implements ContainerInterface
                 )
             );
         }
-        else
-        {
-            return $reflection->newInstance();
-        }
+
+        return $reflection->newInstance();
     }
 
     /**
