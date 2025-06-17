@@ -85,8 +85,8 @@ class ConfigServiceLocator implements ContainerInterface
     /**
      * Instantiate a new object by ID.
      *
-     * @param string $id        ID of the object to instantiate
-     * @param array  $arguments Arguments passed on call (Ignored)
+     * @param string  $id        ID of the object to instantiate
+     * @param mixed[] $arguments Arguments passed on call (Ignored)
      *
      * @return object|null New Object or NULL if the ID is unknown.
      */
@@ -300,10 +300,10 @@ class ConfigServiceLocator implements ContainerInterface
     /**
      * Prepare the parameters in the recipe for object instantiation.
      *
-     * @param array                 $params       Array of parameters according to the recipe.
+     * @param mixed[]               $params       Array of parameters according to the recipe.
      * @param ReflectionParameter[] $methodParams Array of ReflectionParameters for the method
      *
-     * @return array Array of processed parameters ready for instantiation.
+     * @return mixed[] Array of processed parameters ready for instantiation.
      */
     protected function getParameters(array $params, array $methodParams): array
     {
