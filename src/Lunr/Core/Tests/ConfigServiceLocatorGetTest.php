@@ -10,13 +10,19 @@
 
 namespace Lunr\Core\Tests;
 
+use Lunr\Halo\CallbackMock;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
 /**
  * This class contains the tests for the locator class.
  *
- * @covers     Lunr\Core\ConfigServiceLocator
+ * @covers Lunr\Core\ConfigServiceLocator
  */
 class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTestCase
 {
+
+    use MockeryPHPUnitIntegration;
 
     /**
      * Test that locate() returns an instance from the registry.
@@ -65,14 +71,15 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTestCase
 
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
+        $mock = Mockery::mock(CallbackMock::class);
 
-        $mock->expects($this->exactly(2))
-             ->method('test')
-             ->withConsecutive(
-                 [ 'param1' ],
-                 [ 'param2', 'param3' ]
-             );
+        $mock->shouldReceive('test')
+             ->once()
+             ->with('param1');
+
+        $mock->shouldReceive('test')
+             ->once()
+             ->with('param2', 'param3');
 
         $this->mockMethod([ $this->class, 'getInstance' ], function () use ($mock) { return $mock; });
 
@@ -167,14 +174,15 @@ class ConfigServiceLocatorGetTest extends ConfigServiceLocatorTestCase
 
         $this->setReflectionPropertyValue('cache', $cache);
 
-        $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
+        $mock = Mockery::mock(CallbackMock::class);
 
-        $mock->expects($this->exactly(2))
-             ->method('test')
-             ->withConsecutive(
-                 [ 'param1' ],
-                 [ 'param2', 'param3' ]
-             );
+        $mock->shouldReceive('test')
+             ->once()
+             ->with('param1');
+
+        $mock->shouldReceive('test')
+             ->once()
+             ->with('param2', 'param3');
 
         $this->mockMethod([ $this->class, 'getInstance' ], function () use ($mock) { return $mock; });
 

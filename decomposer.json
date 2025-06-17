@@ -25,5 +25,13 @@
             "prefix": "Psr\\Container",
             "search-path": "/src/"
         }
+    },
+    "Mockery": {
+        "url": "https://github.com/mockery/mockery.git",
+        "version": "1.6.12",
+        "psr0": {
+            "path": "/library/"
+        },
+        "development-only": true
     }
 }

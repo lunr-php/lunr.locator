@@ -11,15 +11,19 @@
 namespace Lunr\Core\Tests;
 
 use Lunr\Halo\CallbackMock;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use stdClass;
 
 /**
  * This class contains the tests for the locator class.
  *
- * @covers     Lunr\Core\ConfigServiceLocator
+ * @covers Lunr\Core\ConfigServiceLocator
  */
 class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
 {
+
+    use MockeryPHPUnitIntegration;
 
     /**
      * Test that loadRecipe() does not try to include non-existing files.
@@ -188,14 +192,15 @@ class ConfigServiceLocatorSupportTest extends ConfigServiceLocatorTestCase
 
         $this->setReflectionPropertyValue('cache', $recipe);
 
-        $mock = $this->getMockBuilder('Lunr\Halo\CallbackMock')->getMock();
+        $mock = Mockery::mock(CallbackMock::class);
 
-        $mock->expects($this->exactly(2))
-             ->method('test')
-             ->withConsecutive(
-                 [ 'param1' ],
-                 [ 'param2', 'param3' ]
-             );
+        $mock->shouldReceive('test')
+             ->once()
+             ->with('param1');
+
+        $mock->shouldReceive('test')
+             ->once()
+             ->with('param2', 'param3');
 
         $method = $this->getReflectionMethod('processNewInstance');
         $this->assertSame($mock, $method->invokeArgs($this->class, [ 'id', $mock ]));

@@ -62,7 +62,7 @@ abstract class ConfigServiceLocatorTestCase extends LunrBaseTestCase
      *
      * @return array $ids Array of invalid recipe ids.
      */
-    public function invalidRecipeProvider(): array
+    public static function invalidRecipeProvider(): array
     {
         $ids   = [];
         $ids[] = [ 'nonexisting' ];
@@ -71,23 +71,6 @@ abstract class ConfigServiceLocatorTestCase extends LunrBaseTestCase
         $ids[] = [ 'recipeidparamsnotarray' ];
 
         return $ids;
-    }
-
-    /**
-     * Unit test data provider for non-objects.
-     *
-     * @return array $values Array of non-object values
-     */
-    public function invalidObjectProvider(): array
-    {
-        $values   = [];
-        $values[] = [ 'String' ];
-        $values[] = [ 1 ];
-        $values[] = [ 1.1 ];
-        $values[] = [ NULL ];
-        $values[] = [ TRUE ];
-
-        return $values;
     }
 
 }
