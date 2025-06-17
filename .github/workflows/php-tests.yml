@@ -9,7 +9,7 @@ jobs:
   php-tests:
     uses: lunr-php/actions-templates/.github/workflows/php-composer.yml@master
     with:
-      phpstan-level: 5
+      phpstan-level: 6
       allow-style-failures: false
       allow-phpstan-failures: false
       codestyle-branch: '0.11.0'
