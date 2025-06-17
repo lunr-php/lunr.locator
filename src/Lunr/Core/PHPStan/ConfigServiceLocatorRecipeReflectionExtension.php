@@ -23,14 +23,14 @@ class ConfigServiceLocatorRecipeReflectionExtension implements MethodsClassRefle
 {
     /**
      * List of locators that are pre-set
-     * @var array
+     * @var string[]
      */
     private array $presetList = [ 'config' ];
 
     /**
      * Constructor for ConfigServiceLocatorRecipeReflectionExtension.
      *
-     * @param array $presetList List of pre-set locator recipes.
+     * @param string[] $presetList List of pre-set locator recipes.
      */
     public function __construct(array $presetList = [])
     {
